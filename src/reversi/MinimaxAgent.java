@@ -43,7 +43,6 @@ public class MinimaxAgent extends Agent {
 
         int winner = game.checkForWin();
 
-        //
         if (winner == getRole()) {
             maxCVT.utility = inf - 5; //this agent wins
             return maxCVT;
@@ -63,18 +62,13 @@ public class MinimaxAgent extends Agent {
         }
 
         for (int i = 0; i < 8; i++) {
-            int j, p, k;
+            for (int j = 0; j < 8; j++) {
 
-            for (j = 0, p = 7; j < 8; j++, p--) {
 
-                if (getRole() == 0)
-                    k = j;
-                 else
-                     k = p;
-                if (!game.isValidCell(i, k, getRole())) {
+                if (!game.isValidCell(i, j, getRole())) {
                     continue;
                 }
-                ArrayList<CellValueTuple> tempMoves = game.makeTemporaryMove(i, k, getRole());
+                ArrayList<CellValueTuple> tempMoves = game.makeTemporaryMove(i, j, getRole());
 
                 int v = min(game, alpha, beta, d - 1).utility;
                 game.removeTemporaryMoves(tempMoves);
@@ -84,10 +78,9 @@ public class MinimaxAgent extends Agent {
                 if (v > maxCVT.utility) {
                     maxCVT.utility = v;
                     maxCVT.row = i;
-                    maxCVT.col = k;
+                    maxCVT.col = j;
                 }
                 if (maxCVT.utility >= beta) {
-
                     return maxCVT;
                 }
                 if (maxCVT.utility > alpha) {
@@ -127,17 +120,12 @@ public class MinimaxAgent extends Agent {
 
         for (int i = 0; i < 8; i++) {
 
-            int j, p, k;
-            for (j = 0, p = 7; j < 8; p--, j++) {
+            for (int j = 0; j < 8;  j++) {
 
-                if (getRole() == 0)
-                    k = j;
-                else
-                    k = p;
-                if (!game.isValidCell(i, k, minRole())) {
+                if (!game.isValidCell(i, j, minRole())) {
                     continue;
                 }
-                ArrayList<CellValueTuple> tempMoves = game.makeTemporaryMove(i, k, minRole());
+                ArrayList<CellValueTuple> tempMoves = game.makeTemporaryMove(i, j, minRole());
 
                 int v = max(game, alpha, beta, d - 1).utility;
                 game.removeTemporaryMoves(tempMoves);
@@ -147,7 +135,7 @@ public class MinimaxAgent extends Agent {
                 if (v < minCVT.utility) {
                     minCVT.utility = v;
                     minCVT.row = i;
-                    minCVT.col = k;
+                    minCVT.col = j;
                 }
                 if (minCVT.utility <= alpha) {
                     return minCVT;

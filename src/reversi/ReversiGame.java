@@ -139,15 +139,6 @@ public class ReversiGame extends Game {
         }
         int blue = agent[1].getScore();
         int red = agent[0].getScore();
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                if (board[i][j] == 0) {
-//                    red++;
-//                } else if (board[i][j] == 1) {
-//                    blue++;
-//                }
-//            }
-//        }
 
         if (red > blue) {
             winRole = 0;
@@ -329,129 +320,7 @@ public class ReversiGame extends Game {
 
     }
 
-    private int opponentCount(int row, int col, int role) {
-        int count = 0;
-        for (int j = col + 1; j < 8; j++)//right direction
-        {
-            if (board[row][j] == role || board[row][j] == -1) {
-                if (board[row][j] == role) // flip opponent
-                {
-                    for (int k = col + 1; k < j; k++) {
-                        //board[row][k] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
 
-        }
-
-        for (int j = col - 1; j >= 0; j--)//left direction
-        {
-            if (board[row][j] == role || board[row][j] == -1) {
-                if (board[row][j] == role) // flip opponent
-                {
-                    for (int k = col - 1; k > j; k--) {
-                        // board[row][k] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        for (int i = row - 1; i >= 0; i--)//up direction
-        {
-            if (board[i][col] == role || board[i][col] == -1) {
-                if (board[i][col] == role) {
-                    for (int k = row - 1; k > i; k--) {
-                        //board[k][col] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        for (int i = row + 1; i < 8; i++)//down direction
-        {
-            if (board[i][col] == role || board[i][col] == -1) {
-                if (board[i][col] == role) {
-                    for (int k = row + 1; k < i; k++) {
-                        //board[k][col] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        int i, j;
-        for (i = row + 1, j = col + 1; i < 8 && j < 8; i++, j++)// right down direction
-        {
-            if (board[i][j] == role || board[i][j] == -1) {
-                if (board[i][j] == role) {
-                    int k, p;
-                    for (k = row + 1, p = col + 1; k < i && p < j; k++, p++) {
-                        // board[k][p] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        for (i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)// left up direction
-        {
-            if (board[i][j] == role || board[i][j] == -1) {
-                if (board[i][j] == role) {
-                    int k, p;
-                    for (k = row - 1, p = col - 1; k > i && p > j; k--, p--) {
-                        // board[k][p] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        for (i = row - 1, j = col + 1; i >= 0 && j < 8; i--, j++)// right up direction
-        {
-            if (board[i][j] == role || board[i][j] == -1) {
-                if (board[i][j] == role) {
-                    int k, p;
-                    for (k = row - 1, p = col + 1; k > i && p < j; k--, p++) {
-                        //  board[k][p] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-
-        for (i = row + 1, j = col - 1; i < 8 && j >= 0; i++, j--)// left down direction
-        {
-            if (board[i][j] == role || board[i][j] == -1) {
-                if (board[i][j] == role) {
-                    int k, p;
-                    for (k = row + 1, p = col - 1; k < i && p > j; k++, p--) {
-                        //board[k][p] = role;
-                        count++;
-                    }
-                }
-                break;
-            }
-
-        }
-        return count;
-
-    } //колличество ходов у точки
 
     public void finishGame() {
         running = false;
@@ -798,7 +667,7 @@ public class ReversiGame extends Game {
         }
     }
 
-   public int greedyUtility(int r) { //количество фишек оределенной роли
+   public int greedyUtility(int r) {
         int count = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -809,7 +678,7 @@ public class ReversiGame extends Game {
         return count;
     }
 
-    int approximateUtility(int r) { //просчет ценности ходов для очков
+    int approximateUtility(int r) {
         int ownScore = 0;
 
         for (int i = 0; i < 8; i++) {
@@ -878,6 +747,123 @@ public class ReversiGame extends Game {
             }
         }
         return b;
+    }
+
+    private int opponentCount(int row, int col, int role) {
+        int count = 0;
+        for (int j = col + 1; j < 8; j++)//right direction
+        {
+            if (board[row][j] == role || board[row][j] == -1) {
+                if (board[row][j] == role) // flip opponent
+                {
+                    for (int k = col + 1; k < j; k++) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (int j = col - 1; j >= 0; j--)//left direction
+        {
+            if (board[row][j] == role || board[row][j] == -1) {
+                if (board[row][j] == role) // flip opponent
+                {
+                    for (int k = col - 1; k > j; k--) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (int i = row - 1; i >= 0; i--)//up direction
+        {
+            if (board[i][col] == role || board[i][col] == -1) {
+                if (board[i][col] == role) {
+                    for (int k = row - 1; k > i; k--) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (int i = row + 1; i < 8; i++)//down direction
+        {
+            if (board[i][col] == role || board[i][col] == -1) {
+                if (board[i][col] == role) {
+                    for (int k = row + 1; k < i; k++) {
+                        //board[k][col] = role;
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        int i, j;
+        for (i = row + 1, j = col + 1; i < 8 && j < 8; i++, j++)// right down direction
+        {
+            if (board[i][j] == role || board[i][j] == -1) {
+                if (board[i][j] == role) {
+                    int k, p;
+                    for (k = row + 1, p = col + 1; k < i && p < j; k++, p++) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)// left up direction
+        {
+            if (board[i][j] == role || board[i][j] == -1) {
+                if (board[i][j] == role) {
+                    int k, p;
+                    for (k = row - 1, p = col - 1; k > i && p > j; k--, p--) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (i = row - 1, j = col + 1; i >= 0 && j < 8; i--, j++)// right up direction
+        {
+            if (board[i][j] == role || board[i][j] == -1) {
+                if (board[i][j] == role) {
+                    int k, p;
+                    for (k = row - 1, p = col + 1; k > i && p < j; k--, p++) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+
+        for (i = row + 1, j = col - 1; i < 8 && j >= 0; i++, j--)// left down direction
+        {
+            if (board[i][j] == role || board[i][j] == -1) {
+                if (board[i][j] == role) {
+                    int k, p;
+                    for (k = row + 1, p = col - 1; k < i && p > j; k++, p--) {
+                        count++;
+                    }
+                }
+                break;
+            }
+
+        }
+        return count;
+
     }
 
 }
